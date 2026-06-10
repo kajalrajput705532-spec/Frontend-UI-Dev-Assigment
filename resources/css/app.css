@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ghost-field {
+    opacity: 0.4;
+    background-color: #f3f4f6;
+    border: 2px dashed #3b82f6;
+}
+
+.drag-over {
+    background-color: #eff6ff !important;
+    border-color: #3b82f6 !important;
+}

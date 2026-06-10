@@ -1,64 +1,88 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Form Builder
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A drag-and-drop form builder built inside a Laravel project using Blade components, Vanilla JavaScript, and Tailwind CSS.
 
-## About Laravel 
+## Setup
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan serve
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Open `http://127.0.0.1:8000` in your browser. No database setup required.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## How It Works
 
-## Learning Laravel
+Fields are dragged from the right panel onto the canvas. Each placed field can be edited, duplicated, reordered, or deleted. The form schema is saved in localStorage so it persists across page refreshes. Clicking "Next" generates the JSON output.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Drag & Drop Approach
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Used the native **HTML5 Drag and Drop API** — no third-party DnD library.
 
-## Laravel Sponsors
+Reasons:
+- No extra dependencies, no build step needed beyond `php artisan serve`
+- Works well for both palette-to-canvas drops and within-canvas reordering
+- Keeps the code straightforward and easy to follow
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Assumptions
 
-### Premium Partners
+- No backend needed for form submission — the assignment says "No API calls needed". State is stored in localStorage.
+- The submission URL shown in the header is a display label, not a real endpoint.
+- Tailwind is loaded via CDN to avoid requiring an npm build step. This keeps setup to just `php artisan serve`.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Supported Fields
 
-## Contributing
+Text Input, Text Area, Number, Email, Phone, Dropdown, Radio Buttons, Checkboxes, Date Picker, File Upload, Hidden Field
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Bonus Features Included
 
-## Code of Conduct
+- Undo / Redo (Ctrl+Z / Ctrl+Y)
+- Form Preview Mode
+- LocalStorage persistence
+- Delete confirmation
+- Drag-over canvas highlight
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Sample JSON Output
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```json
+{
+  "title": "Contact Form",
+  "fields": [
+    {
+      "id": 1718000000001,
+      "type": "text",
+      "label": "Full Name",
+      "placeholder": "Enter your name",
+      "required": true,
+      "defaultValue": "",
+      "cssClass": "",
+      "min": "",
+      "max": ""
+    },
+    {
+      "id": 1718000000002,
+      "type": "email",
+      "label": "Email",
+      "placeholder": "you@example.com",
+      "required": true,
+      "defaultValue": "",
+      "cssClass": "",
+      "min": "",
+      "max": ""
+    },
+    {
+      "id": 1718000000003,
+      "type": "dropdown",
+      "label": "Subject",
+      "required": false,
+      "options": ["General Inquiry", "Support", "Other"],
+      "defaultValue": "",
+      "cssClass": "",
+      "min": "",
+      "max": ""
+    }
+  ]
+}
+```
