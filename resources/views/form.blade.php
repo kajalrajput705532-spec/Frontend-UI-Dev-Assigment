@@ -23,11 +23,11 @@
             <div class="w-full md:w-1/2">
                 <input type="text" id="formTitle" maxlength="200"
                        class="w-full text-3xl font-bold text-slate-800 border-none focus:ring-0 p-0 bg-transparent placeholder-slate-300"
-                       placeholder="Untitled Form">
+                       placeholder="Contact Us Form">
                 <div class="flex items-center mt-2 text-sm text-slate-500">
-                    <span id="titleCount">0</span>/200 chars
-                    <span class="mx-3 text-slate-300">|</span>
-                    <span>Submission URL: <span id="submissionUrl" class="text-blue-500">/forms/untitled-form</span></span>
+                    <!-- <span id="titleCount">0</span>/200 chars -->
+                    <!-- <span class="mx-3 text-slate-300">|</span> -->
+                    <!-- <span>Submission URL: <span id="submissionUrl" class="text-blue-500">/forms/untitled-form</span></span> -->
                 </div>
             </div>
             <div class="mt-4 md:mt-0 flex items-center gap-3">
