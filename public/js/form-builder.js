@@ -157,9 +157,9 @@ document.addEventListener('DOMContentLoaded', () => {
             wrapper.draggable = true;
 
             if (field.id === selectedFieldId) {
-                wrapper.classList.add('ring-2', 'ring-blue-500', 'bg-blue-50/30', 'rounded-xl', 'p-2', '-mx-2');
+                wrapper.classList.add('ring-2', 'ring-blue-500', 'rounded-xl', 'p-2', '-mx-2');
             } else {
-                wrapper.classList.add('hover:bg-gray-50', 'rounded-xl', 'p-2', '-mx-2', 'transition-colors');
+                wrapper.classList.add('hover:ring-1', 'hover:ring-slate-300', 'rounded-xl', 'p-2', '-mx-2', 'transition-all');
             }
 
             const labelEl = wrapper.querySelector('.field-label');
@@ -171,15 +171,30 @@ document.addEventListener('DOMContentLoaded', () => {
             if (inputEl) {
                 if (field.placeholder) inputEl.placeholder = field.placeholder;
                 if (field.defaultValue) inputEl.value = field.defaultValue;
-                if (field.cssClass) inputEl.className += ` ${field.cssClass}`;
+                
+                if (field.min) {
+                    if (field.type === 'number') inputEl.min = field.min;
+                    else inputEl.minLength = field.min;
+                }
+                if (field.max) {
+                    if (field.type === 'number') inputEl.max = field.max;
+                    else inputEl.maxLength = field.max;
+                }
+                if (field.required) {
+                    inputEl.required = true;
+                }
+            }
+            if (field.cssClass) {
+                wrapper.className += ` ${field.cssClass}`;
             }
 
             if (['radio', 'checkbox'].includes(field.type)) {
                 const container = wrapper.querySelector('.field-options-container');
+                const defaultVals = field.defaultValues || [];
                 if (container && field.options) {
                     container.innerHTML = field.options.map(opt => `
                         <label class="flex items-center gap-2">
-                            <input type="${field.type}" class="w-4 h-4 text-blue-600" disabled>
+                            <input type="${field.type}" name="field_${field.id}" value="${String(opt).replace(/"/g, '&quot;')}" class="w-4 h-4 text-blue-600 border-gray-300 field-input ${field.type === 'radio' ? 'rounded-full' : 'rounded'}" ${defaultVals.includes(opt) ? 'checked' : ''}>
                             <span class="text-sm text-gray-700">${opt}</span>
                         </label>
                     `).join('');
@@ -189,9 +204,26 @@ document.addEventListener('DOMContentLoaded', () => {
             if (field.type === 'dropdown') {
                 const selectEl = wrapper.querySelector('select');
                 if (selectEl && field.options) {
-                    selectEl.innerHTML = field.options.map(opt => `<option>${opt}</option>`).join('');
+                    const defaultVals = field.defaultValues || [];
+                    selectEl.innerHTML = field.options.map(opt => `<option value="${String(opt).replace(/"/g, '&quot;')}" ${defaultVals.includes(opt) ? 'selected' : ''}>${opt}</option>`).join('');
                 }
             }
+
+            const isSelected = (field.id === selectedFieldId);
+            wrapper.querySelectorAll('.field-input, select').forEach(el => {
+                if (!isPreviewMode && !isSelected) {
+                    el.classList.add('pointer-events-none');
+                    el.tabIndex = -1;
+                } else {
+                    el.classList.remove('pointer-events-none');
+                    el.removeAttribute('disabled');
+                    el.tabIndex = 0;
+                    el.addEventListener('input', (e) => syncCanvasToSidebar(field.id, e.target));
+                    el.addEventListener('change', (e) => syncCanvasToSidebar(field.id, e.target));
+                }
+            });
+
+            wrapper.style.cursor = isPreviewMode ? 'default' : 'move';
 
             const editBtn = wrapper.querySelector('.edit-field');
             if (editBtn) editBtn.onclick = (e) => { e.stopPropagation(); selectField(field.id); };
@@ -203,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (dupBtn) dupBtn.onclick = (e) => { e.stopPropagation(); duplicateField(field.id); };
 
             wrapper.onclick = () => {
-                if (!isPreviewMode) selectField(field.id);
+                // Auto-selection disabled per user request
             };
 
             wrapper.addEventListener('dragstart', (e) => {
@@ -226,6 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function selectField(id) {
+        if (selectedFieldId === id) return;
         selectedFieldId = id;
         const field = formSchema.find(f => f.id === id);
         if (!field) return;
@@ -256,9 +289,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderOptionsEditor(field) {
         const container = document.getElementById('optionsListContainer');
+        const defaultVals = field.defaultValues || [];
+        const isSingleChoice = ['radio', 'dropdown'].includes(field.type);
         container.innerHTML = field.options.map((opt, idx) => `
             <div class="flex items-center gap-2">
-                <input type="text" value="${opt}" class="flex-1 px-3 py-1.5 border border-gray-300 rounded text-sm focus:border-blue-500 focus:outline-none" onchange="updateOption(${field.id}, ${idx}, this.value)">
+                <input type="${isSingleChoice ? 'radio' : 'checkbox'}" name="default_opt_${field.id}" class="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 cursor-pointer ${isSingleChoice ? 'rounded-full' : 'rounded'}" title="Set as default" ${defaultVals.includes(opt) ? 'checked' : ''} onchange="toggleDefaultOption(${field.id}, ${idx}, this.checked)">
+                <input type="text" value="${String(opt).replace(/"/g, '&quot;')}" class="flex-1 px-3 py-1.5 border border-gray-300 rounded text-sm focus:border-blue-500 focus:outline-none" onchange="updateOption(${field.id}, ${idx}, this.value)">
                 <button type="button" class="p-1.5 text-gray-400 hover:text-red-500 transition-colors" onclick="removeOption(${field.id}, ${idx})">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
@@ -266,10 +302,67 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     }
 
+    window.toggleDefaultOption = function(fieldId, idx, isChecked) {
+        const field = formSchema.find(f => f.id === fieldId);
+        if (!field) return;
+        
+        if (!field.defaultValues) field.defaultValues = [];
+        const optValue = field.options[idx];
+        
+        if (['radio', 'dropdown'].includes(field.type)) {
+            field.defaultValues = [optValue];
+        } else {
+            if (isChecked) {
+                if (!field.defaultValues.includes(optValue)) field.defaultValues.push(optValue);
+            } else {
+                field.defaultValues = field.defaultValues.filter(v => v !== optValue);
+            }
+        }
+        saveHistory();
+        renderCanvas();
+    };
+
+    window.syncCanvasToSidebar = function(fieldId, element) {
+        const field = formSchema.find(f => f.id === fieldId);
+        if (!field) return;
+
+        if (element.type === 'checkbox' || element.type === 'radio') {
+            if (!field.defaultValues) field.defaultValues = [];
+            const optValue = element.value;
+            
+            if (element.type === 'radio') {
+                field.defaultValues = [optValue];
+            } else {
+                if (element.checked) {
+                    if (!field.defaultValues.includes(optValue)) field.defaultValues.push(optValue);
+                } else {
+                    field.defaultValues = field.defaultValues.filter(v => v !== optValue);
+                }
+            }
+        } else if (element.tagName === 'SELECT') {
+            field.defaultValues = [element.value];
+        } else {
+            field.defaultValue = element.value;
+        }
+
+        if (selectedFieldId === fieldId) {
+            if (element.type === 'checkbox' || element.type === 'radio' || element.tagName === 'SELECT') {
+                renderOptionsEditor(field);
+            } else {
+                const defaultInput = document.getElementById('optDefault');
+                if (defaultInput && defaultInput.value !== element.value) defaultInput.value = element.value || '';
+            }
+        }
+    };
+
     window.updateOption = function(fieldId, idx, val) {
         const field = formSchema.find(f => f.id === fieldId);
         if (field) {
+            const oldVal = field.options[idx];
             field.options[idx] = val;
+            if (field.defaultValues && field.defaultValues.includes(oldVal)) {
+                field.defaultValues = field.defaultValues.map(v => v === oldVal ? val : v);
+            }
             saveHistory();
             renderCanvas();
         }
@@ -456,19 +549,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const canvasWrap = document.querySelector('.lg\\:w-2\\/3');
 
         if (isPreviewMode) {
-            btn.textContent = 'Back to Editor';
+            btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> Back to Editor`;
             sidebar.classList.add('hidden');
             canvasWrap.classList.replace('lg:w-2/3', 'w-full');
-            document.querySelectorAll('.field-input').forEach(el => el.removeAttribute('disabled'));
-            document.querySelectorAll('.field-actions').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.form-element').forEach(el => { el.draggable = false; });
         } else {
-            btn.textContent = 'Preview';
+            btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg> Preview`;
             sidebar.classList.remove('hidden');
             canvasWrap.classList.replace('w-full', 'lg:w-2/3');
-            document.querySelectorAll('.field-input').forEach(el => el.setAttribute('disabled', 'true'));
-            document.querySelectorAll('.field-actions').forEach(el => el.classList.remove('hidden'));
-            renderCanvas();
         }
+        renderCanvas();
     });
 });

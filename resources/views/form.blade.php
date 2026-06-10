@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 <style type="text/tailwindcss">
     @layer utilities {
         .ghost-field { @apply opacity-30 bg-blue-50 border-2 border-dashed border-blue-400; }
@@ -23,7 +23,7 @@
             <div class="w-full md:w-1/2">
                 <input type="text" id="formTitle" maxlength="200"
                        class="w-full text-3xl font-bold text-slate-800 border-none focus:ring-0 p-0 bg-transparent placeholder-slate-300"
-                       placeholder="Contact Us Form">
+                       placeholder="My Awesome Registration Form">
                 <div class="flex items-center mt-2 text-sm text-slate-500">
                     <!-- <span id="titleCount">0</span>/200 chars -->
                     <!-- <span class="mx-3 text-slate-300">|</span> -->
@@ -31,13 +31,16 @@
                 </div>
             </div>
             <div class="mt-4 md:mt-0 flex items-center gap-3">
-                <button id="previewBtn" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-medium hover:bg-slate-200 transition-colors text-sm">Preview</button>
-                <div class="flex bg-slate-100 rounded-lg p-1">
-                    <button id="undoBtn" class="p-1.5 text-slate-600 rounded hover:bg-white transition-all disabled:opacity-30" title="Undo (Ctrl+Z)" disabled>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg>
+                <button id="previewBtn" class="px-5 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-lg font-bold hover:shadow-lg hover:shadow-indigo-500/30 transition-all text-sm flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    Preview
+                </button>
+                <div class="flex bg-slate-100/80 rounded-lg p-1 border border-slate-200 shadow-sm">
+                    <button id="undoBtn" class="p-2 text-slate-500 hover:text-blue-600 hover:bg-white rounded transition-all disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-slate-500" title="Undo (Ctrl+Z)" disabled>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg>
                     </button>
-                    <button id="redoBtn" class="p-1.5 text-slate-600 rounded hover:bg-white transition-all disabled:opacity-30" title="Redo (Ctrl+Y)" disabled>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6"></path></svg>
+                    <button id="redoBtn" class="p-2 text-slate-500 hover:text-blue-600 hover:bg-white rounded transition-all disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-slate-500" title="Redo (Ctrl+Y)" disabled>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6"></path></svg>
                     </button>
                 </div>
             </div>
@@ -71,72 +74,72 @@
                         <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Basic Elements</h3>
                         <div class="grid grid-cols-2 gap-3">
                             <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-blue-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="text">
-                                <div class="bg-slate-50 p-2.5 rounded-lg group-hover:bg-blue-50 transition-colors">
-                                    <svg class="w-5 h-5 text-slate-500 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
+                                <div class="bg-blue-50 p-2.5 rounded-lg group-hover:bg-blue-100 transition-colors">
+                                    <svg class="w-5 h-5 text-blue-500 group-hover:text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
                                 </div>
                                 <span class="text-xs font-bold text-slate-700 group-hover:text-blue-700">Text Input</span>
                             </div>
                             <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-blue-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="textarea">
-                                <div class="bg-slate-50 p-2.5 rounded-lg group-hover:bg-blue-50 transition-colors">
-                                    <svg class="w-5 h-5 text-slate-500 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+                                <div class="bg-blue-50 p-2.5 rounded-lg group-hover:bg-blue-100 transition-colors">
+                                    <svg class="w-5 h-5 text-blue-500 group-hover:text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
                                 </div>
                                 <span class="text-xs font-bold text-slate-700 group-hover:text-blue-700">Text Area</span>
                             </div>
-                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-blue-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="number">
-                                <div class="bg-slate-50 p-2.5 rounded-lg group-hover:bg-blue-50 transition-colors">
-                                    <span class="font-black text-slate-500 group-hover:text-blue-600 text-lg leading-none">123</span>
+                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-emerald-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="number">
+                                <div class="bg-emerald-50 p-2.5 rounded-lg group-hover:bg-emerald-100 transition-colors">
+                                    <span class="font-black text-emerald-500 group-hover:text-emerald-700 text-lg leading-none">123</span>
                                 </div>
-                                <span class="text-xs font-bold text-slate-700 group-hover:text-blue-700">Number</span>
+                                <span class="text-xs font-bold text-slate-700 group-hover:text-emerald-700">Number</span>
                             </div>
-                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-blue-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="email">
-                                <div class="bg-slate-50 p-2.5 rounded-lg group-hover:bg-blue-50 transition-colors">
-                                    <svg class="w-5 h-5 text-slate-500 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-purple-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="email">
+                                <div class="bg-purple-50 p-2.5 rounded-lg group-hover:bg-purple-100 transition-colors">
+                                    <svg class="w-5 h-5 text-purple-500 group-hover:text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                                 </div>
-                                <span class="text-xs font-bold text-slate-700 group-hover:text-blue-700">Email</span>
+                                <span class="text-xs font-bold text-slate-700 group-hover:text-purple-700">Email</span>
                             </div>
-                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-blue-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="phone">
-                                <div class="bg-slate-50 p-2.5 rounded-lg group-hover:bg-blue-50 transition-colors">
-                                    <svg class="w-5 h-5 text-slate-500 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-pink-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="phone">
+                                <div class="bg-pink-50 p-2.5 rounded-lg group-hover:bg-pink-100 transition-colors">
+                                    <svg class="w-5 h-5 text-pink-500 group-hover:text-pink-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
                                 </div>
-                                <span class="text-xs font-bold text-slate-700 group-hover:text-blue-700">Phone</span>
+                                <span class="text-xs font-bold text-slate-700 group-hover:text-pink-700">Phone</span>
                             </div>
                         </div>
 
                         <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-6 mb-4">Choice Elements</h3>
                         <div class="grid grid-cols-2 gap-3">
-                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-blue-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="dropdown">
-                                <div class="bg-slate-50 p-2.5 rounded-lg group-hover:bg-blue-50 transition-colors">
-                                    <svg class="w-5 h-5 text-slate-500 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-orange-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="dropdown">
+                                <div class="bg-orange-50 p-2.5 rounded-lg group-hover:bg-orange-100 transition-colors">
+                                    <svg class="w-5 h-5 text-orange-500 group-hover:text-orange-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </div>
-                                <span class="text-xs font-bold text-slate-700 group-hover:text-blue-700">Dropdown</span>
+                                <span class="text-xs font-bold text-slate-700 group-hover:text-orange-700">Dropdown</span>
                             </div>
-                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-blue-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="radio">
-                                <div class="bg-slate-50 p-2.5 rounded-lg group-hover:bg-blue-50 transition-colors">
-                                    <svg class="w-5 h-5 text-slate-500 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-amber-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="radio">
+                                <div class="bg-amber-50 p-2.5 rounded-lg group-hover:bg-amber-100 transition-colors">
+                                    <svg class="w-5 h-5 text-amber-500 group-hover:text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 </div>
-                                <span class="text-xs font-bold text-slate-700 group-hover:text-blue-700">Radio</span>
+                                <span class="text-xs font-bold text-slate-700 group-hover:text-amber-700">Radio</span>
                             </div>
-                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-blue-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="checkbox">
-                                <div class="bg-slate-50 p-2.5 rounded-lg group-hover:bg-blue-50 transition-colors">
-                                    <svg class="w-5 h-5 text-slate-500 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-yellow-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="checkbox">
+                                <div class="bg-yellow-50 p-2.5 rounded-lg group-hover:bg-yellow-100 transition-colors">
+                                    <svg class="w-5 h-5 text-yellow-500 group-hover:text-yellow-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                                 </div>
-                                <span class="text-xs font-bold text-slate-700 group-hover:text-blue-700">Checkbox</span>
+                                <span class="text-xs font-bold text-slate-700 group-hover:text-yellow-700">Checkbox</span>
                             </div>
                         </div>
 
                         <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-6 mb-4">Date & File</h3>
                         <div class="grid grid-cols-2 gap-3">
-                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-blue-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="datepicker">
-                                <div class="bg-slate-50 p-2.5 rounded-lg group-hover:bg-blue-50 transition-colors">
-                                    <svg class="w-5 h-5 text-slate-500 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-teal-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="datepicker">
+                                <div class="bg-teal-50 p-2.5 rounded-lg group-hover:bg-teal-100 transition-colors">
+                                    <svg class="w-5 h-5 text-teal-500 group-hover:text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                 </div>
-                                <span class="text-xs font-bold text-slate-700 group-hover:text-blue-700">Date Picker</span>
+                                <span class="text-xs font-bold text-slate-700 group-hover:text-teal-700">Date Picker</span>
                             </div>
-                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-blue-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="fileupload">
-                                <div class="bg-slate-50 p-2.5 rounded-lg group-hover:bg-blue-50 transition-colors">
-                                    <svg class="w-5 h-5 text-slate-500 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                            <div class="palette-item bg-white border border-slate-200 rounded-xl p-4 text-center cursor-grab hover:border-cyan-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all flex flex-col items-center justify-center gap-3 group" draggable="true" data-type="fileupload">
+                                <div class="bg-cyan-50 p-2.5 rounded-lg group-hover:bg-cyan-100 transition-colors">
+                                    <svg class="w-5 h-5 text-cyan-500 group-hover:text-cyan-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                                 </div>
-                                <span class="text-xs font-bold text-slate-700 group-hover:text-blue-700">File Upload</span>
+                                <span class="text-xs font-bold text-slate-700 group-hover:text-cyan-700">File Upload</span>
                             </div>
                         </div>
 
@@ -198,10 +201,13 @@
                                     <input type="text" id="optClass" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm font-mono transition-all bg-white" placeholder="e.g. mt-2 text-red-500">
                                 </div>
 
-                                <div class="flex items-center bg-white p-4 rounded-lg border border-slate-200 shadow-sm mt-2">
-                                    <input type="checkbox" id="optRequired" class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-slate-300 rounded cursor-pointer transition-all">
-                                    <label for="optRequired" class="ml-3 block text-sm text-slate-800 font-bold cursor-pointer">Make this field required</label>
-                                </div>
+                                <label class="flex items-center justify-between bg-white p-3.5 rounded-lg border border-slate-200 shadow-sm mt-2 cursor-pointer hover:bg-slate-50 transition-colors">
+                                    <span class="block text-sm text-slate-800 font-bold">Make this field required</span>
+                                    <div class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" id="optRequired" class="sr-only peer">
+                                        <div class="w-7 h-4 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </div>
+                                </label>
 
                                 <div class="opt-group pt-5 mt-2 border-t border-slate-200" data-applies-to="dropdown,radio,checkbox">
                                     <label class="block text-sm font-bold text-slate-700 mb-3">Options List</label>
